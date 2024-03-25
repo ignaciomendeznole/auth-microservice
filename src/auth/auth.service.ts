@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 
 import { LoginUserDto, RegisterUserDto } from './dto';
 import { PrismaClient } from '@prisma/client';
@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService extends PrismaClient implements OnModuleInit {
+  private logger = new Logger('AuthService');
   constructor() {
     super();
   }
@@ -17,6 +18,7 @@ export class AuthService extends PrismaClient implements OnModuleInit {
   }
 
   async registerUser(registerUserDto: RegisterUserDto) {
+    this.logger.log('registerUser', registerUserDto);
     try {
       const user = await this.findUserByEmail(registerUserDto.email);
 
