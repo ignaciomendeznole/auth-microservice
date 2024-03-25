@@ -60,7 +60,7 @@ export class AuthService extends PrismaClient implements OnModuleInit {
 
       if (user.password !== loginUserDto.password) {
         throw new RpcException({
-          message: 'Invalid password',
+          message: 'Invalid credentials',
           status: 400,
         });
       }
