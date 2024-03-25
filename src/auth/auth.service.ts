@@ -1,21 +1,33 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { NATS_SERVICE } from 'src/config';
+import { Injectable, OnModuleInit } from '@nestjs/common';
+
 import { LoginUserDto, RegisterUserDto } from './dto';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
-export class AuthService {
-  constructor(@Inject(NATS_SERVICE) private readonly natsClient: ClientProxy) {}
+export class AuthService extends PrismaClient implements OnModuleInit {
+  constructor() {
+    super();
+  }
+
+  onModuleInit() {
+    this.$connect();
+  }
 
   async registerUser(registerUserDto: RegisterUserDto) {
-    return this.natsClient.send('auth.register.user', registerUserDto);
+    return {
+      registerUserDto,
+    };
   }
 
   async loginUser(loginUserDto: LoginUserDto) {
-    return this.natsClient.send('auth.login.user', loginUserDto);
+    return {
+      loginUserDto,
+    };
   }
 
   async verifyToken(token: string) {
-    return this.natsClient.send('auth.verify.user', token);
+    return {
+      verified: token,
+    };
   }
 }
