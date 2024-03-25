@@ -36,6 +36,8 @@ export class AuthService extends PrismaClient implements OnModuleInit {
         },
       });
 
+      delete newUser.password;
+
       return { user: newUser, token: 'token' };
     } catch (error) {
       throw new RpcException({
