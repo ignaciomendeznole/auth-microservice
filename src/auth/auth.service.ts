@@ -58,15 +58,25 @@ export class AuthService extends PrismaClient implements OnModuleInit {
         });
       }
 
-      if (user.password !== loginUserDto.password) {
+      const isPasswordValid = bcrypt.compareSync(
+        loginUserDto.password,
+        user.password,
+      );
+
+      if (!isPasswordValid) {
         throw new RpcException({
-          message: 'Invalid credentials',
+          message: 'Invalid password',
           status: 400,
         });
       }
 
       return user;
-    } catch (error) {}
+    } catch (error) {
+      throw new RpcException({
+        message: error.message,
+        status: error.code,
+      });
+    }
   }
 
   async verifyToken(token: string) {
