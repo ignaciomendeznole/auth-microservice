@@ -11,7 +11,7 @@ steps:
     args:
       [
         'push',
-        'southamerica-west1-docker.pkg.dev/store-microservices-418622/image-registry/orders-microservice-production',
+        'southamerica-west1-docker.pkg.dev/store-microservices-418622/image-registry/auth-microservice-production',
       ]
 
 # Add secret in the build configuration
